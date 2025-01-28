@@ -1,33 +1,94 @@
-import { Tabs } from 'expo-router';
-/* @tutinfo Import <CODEIonicons</CODE> icon set.*/
-import Ionicons from '@expo/vector-icons/Ionicons';
-
+import { Tabs } from "expo-router";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useAuthCheck } from "@/store/hooks/useAuthCheck";
+import React from "react";
+import { ActivityIndicator, View } from "react-native";
 
 export default function TabLayout() {
+  const { isReady, isLoading } = useAuthCheck();
+
+  if (isLoading || !isReady) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <ActivityIndicator size="large" color="#E25822" />
+      </View>
+    );
+  }
+  
   return (
     <Tabs
-      /* @tutinfo There are many <CODE>screenOptions</CODE> we can use to customize the tab bar. We're changing the active tab color here to custom value which we will also use later in our app. */
       screenOptions={{
-        tabBarActiveTintColor: '#ffd33d',
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: "white",
+          borderRadius: 25,
+          marginBottom: 20,
+          marginTop: 20,
+          height: 75,
+          width: "90%",
+          paddingBottom: 8,
+          paddingTop: 8,
+          justifyContent: "center",
+          alignSelf: "center",
+          display: "flex",
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: -4,
+          },
+          shadowOpacity: 0.05,
+          shadowRadius: 8,
+        },
+        tabBarActiveTintColor: "#E25822",
+        tabBarInactiveTintColor: "#9CA3AF",
+        tabBarShowLabel: false,
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
           tabBarIcon: ({ color, focused }) => (
-            /* @tutinfo The <CODE>focused</CODE> param allows us to change a tab's icon and label behavior when it is active and inactive.*/
-            <Ionicons name={focused ? 'home-sharp' : 'home-outline'} color={color} size={24} />
+            <Ionicons
+              name={focused ? "home" : "home-outline"}
+              color={color}
+              size={25} // Slightly larger icons since we removed text
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="notification"
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "notifications" : "notifications-outline"}
+              color={color}
+              size={25}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="savedStore"
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "bookmark" : "bookmark-outline"}
+              color={color}
+              size={25}
+            />
           ),
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Profile',
           tabBarIcon: ({ color, focused }) => (
-            /* @tutinfo */
-            <Ionicons name={focused ? 'information-circle' : 'information-circle-outline'} color={color} size={24}/>
+            <Ionicons
+              name={focused ? "person" : "person-outline"}
+              color={color}
+              size={25}
+            />
           ),
         }}
       />
